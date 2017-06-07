@@ -1,0 +1,55 @@
+﻿@model ChatLoco.Models.Base_Model.BaseModel
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<div class="navbar navbar-inverse navbar-fixed-left" id="account-navbar" hidden>
+    <div class="navbar-header" id="logged-in-as">
+        <button type="button" class="navbar-toggle" id="sub-navbar-toggle" data-toggle="collapse" data-target="#sub-navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">
+            @Html.ActionLink("Find A Chatroom", "GetFindChatroomPartial", "Chatroom", new { @id = "find-chatroom-link" })
+        </div>
+        <div class="navbar-brand">
+            <p id="username-header" class="text-info">Logged in as: </p>
+        </div>
+    </div>
+    <div class="navbar-collapse collapse" id="sub-navbar-collapse">
+        <div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @Html.ActionLink("Settings", "Settings", "User", new { @id = "settings-link" })
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @Html.ActionLink("Logout", "Logout", "User", new { @id = "logout-link" })
+                </li>
+            </ul>
+            <ul id="user-management" class="nav navbar-nav navbar-right" hidden>
+                <li>
+                    @Html.ActionLink("Manage Users", "Index", "ManageUsers", new { @id = "manage-link" })'
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div hidden id="login-dialog" title="Login Information">
+</div>
+
+@*hide at the start unless they click the settings button*@
+<div hidden id="settings-dialog" title="User Settings">
+</div>
+<div id="manage-users-dialog" title="Manage Users" hidden></div>
+<div hidden id="disconnected-dialog" title="Server Connection Lost">
+    <a id="check-server-link">Click here to issue a reconnect attempt</a>
+</div>
+
+@Scripts.Render("~/bundles/accountchecking")
+
+<script>
+    _currentUser = @Html.Raw(Json.Encode(Model.User));
+    AccountHandler.CheckUserLogin();
+</script>

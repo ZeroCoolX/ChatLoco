@@ -1,0 +1,154 @@
+﻿@model ChatLoco.Models.Chatroom_Model.ChatroomModel
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+@* These inputs are hidden so that we can get their values easily in JS *@
+<input type="hidden" id="ChatroomId" value="@Model.ChatroomId" />
+<input type="hidden" id="ChatroomName" value="@Model.ChatroomName" />
+<input type="hidden" id="UserHandle" value="@Model.UserHandle" />
+<input type="hidden" id="UserId" value="@Model.UserId" />
+<input type="hidden" id="ParentChatroomId" value="@Model.ParentChatroomId" />
+
+<div class="row">
+    <div class="hidden-lg hidden-md col-sm-1 col-xs-1"></div>
+    <button type="button" class="btn hidden-lg hidden-md col-sm-1 col-xs-1" style="background-color:#39b3d7" data-toggle="collapse" data-target="#OtherChatroomsPaneContainer">
+        <span class="glyphicon glyphicon-th"></span>
+    </button>
+    <div class="hidden-lg hidden-md col-sm-3 col-xs-3"></div>
+    <button type="button" class="btn hidden-lg hidden-md col-sm-2 col-xs-2" style="background-color:#39b3d7" data-toggle="collapse" data-target="#MessagesPaneContainer">
+        <span class="glyphicon glyphicon-comment"></span>
+    </button>
+    <div class="hidden-lg hidden-md col-sm-3 col-xs-3"></div>
+    <button type="button" class="btn hidden-lg hidden-md col-sm-1 col-xs-1" style="background-color:#39b3d7" data-toggle="collapse" data-target="#UsersPaneContainer">
+        <span class="glyphicon glyphicon-user"></span>
+    </button>
+</div>
+@* Bootstrap class col-lg-# allow using bootstrap's built in column organization *@
+<div id="OtherChatroomsPaneContainer" class="col-lg-2 col-md-2 col-sm-2 collapse in">
+    <br />
+    <button id="ParentChatroomButton" style="margin-bottom: 15px; background-color:#0099ff; white-space: normal; width: 100%;" value="@Model.ChatroomId" type="button" class="btn btn-primary">
+        <b id="parent-chatroom-button-text" value="@Model.ChatroomId">@Model.ChatroomName</b>
+    </button>
+
+    <div class="scrollbar" id="style-1" style="margin-bottom: 10px;">
+        <div id="SubChatroomsList" style="height: 100%; background-color: rgba(0,0,0,0.6); border: solid; border-color: black; overflow:hidden; margin-bottom: 0px;" class="force-overflow well">
+            @* This is filled in by JS *@
+        </div>
+    </div>
+
+    <br />
+
+    <button id="create-private-chatroom-dialog-button" type="button" class="btn btn-default" style="border:solid; border-color: #000000;"> New Private Room </button>
+
+    <div id="create-private-chatroom-dialog" hidden>
+        <span id="create-private-chatroom-response"></span>
+        <form id="create-private-chatroom-form">
+            Create Chatroom <input type="text" name="name" />
+            <br />
+            Password (optional) <input type="password" name="password" />
+            <br />
+            Blacklist Accounts (separated by commas) (optional) <input type="text" name="blacklist" />
+            <br />
+            Capacity (optional) <input type="number" name="capacity" />
+        </form>
+    </div>
+
+</div>
+
+<div id="MessagesPaneContainer" class="col-lg-8 col-md-8 col-sm-8 collapse in">
+
+    <h1 class="white"><span id="ChatroomNameDisplay">@Model.ChatroomName</span></h1>
+
+    <div id="style-1" class="scrollbar">
+        <div id="MessagesContainer" style="height: 100%; background-color: rgba(0,0,0,0.6); border: solid; border-color: black; margin-bottom:0; height:auto; max-height:5000px;" class="force-overflow white well">
+            @* This is filled in by JS *@
+        </div>
+   </div>
+
+    <div id="ComposeContainer" style="width:100%; background-color:rgba(0,0,0,0.6); border:solid; border-color:#000000; clear:both" class="well">
+        <form id="ComposeForm" class="form-inline">
+            <span class="white" id="user-handle-container"><b>@Model.UserHandle</b></span> : <input style="width:1000px; color: white; background-color:rgba(0,0,0,0.6);" type="text" name="ComposedMessage" class="form-control" />
+            <input type="submit" class="btn btn-primary"/>
+              
+            <div style="float:right;">
+
+                <select id="select-color" value="white" onchange="this.className=this.options[this.selectedIndex].className" class="white form-control" style="background-color: rgba(0,0,0,0.6); width:auto; display:inline-block;">
+                    <option class="white form-control" value="white" style="background-color: black">White</option>
+                    <option class="red form-control" value="red" style="background-color: black">Red</option>
+                    <option class="blue form-control" value="blue" style="background-color: black">Blue</option>
+                    <option class="green form-control" value="green" style="background-color: black">Green</option>
+                    <option class="pink form-control" value="pink" style="background-color: black">Pink</option>
+                </select>
+
+                @*<div class="dropup form-inline">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Color  <span class="caret"></span></button>
+                    <ul class="dropdown-menu" id="select-color" role="menu" style="background-color:rgba(0,0,0,0.6);" >
+                        <li value="white" style="color:white;" class="selected">White</li>
+                        <li value="red" style="color:red;" >Red</li>
+                        <li value="purple" style="color:purple;" >Purple</li>
+                        <li value="green" style="color:green;"  >Green</li>
+                        <li value="pink"  style="color:pink;" >Pink</li>
+                    </ul>
+                </div>*@
+
+                <button type="button" id="bold-toggle" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off"><b>B</b></button>
+                <button type="button" id="italic-toggle" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off"><i>I</i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="UsersPaneContainer" class="col-lg-2 col-md-2 col-sm-2 collapse in">
+    <h3 class="white">Current Users</h3>
+
+    <div id="style-1" class="scrollbar" style="margin-top:10px;">
+        <div id="UsersContainer" style="border: solid; border-color: #000000; background-color: rgba(0,0,0,0.6); margin-bottom: 0px;" class="force-overflow well">
+            @* This is filled in by JS *@
+        </div>
+    </div>
+    
+</div>
+
+<div id="user-info-container" hidden>
+    <div >
+
+    </div>
+</div>
+<div id="private-chatroom-dialog" hidden>
+</div>
+
+<style>
+    .scrollbar
+    {
+	    float: left;
+	    height: 350px;
+	    width: 100%;
+	    overflow-y: scroll;
+    }
+
+    .force-overflow
+    {
+	    min-height: 350px;
+    }
+
+    #style-1::-webkit-scrollbar-track
+    {
+	    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	    border-radius: 10px;
+	    background-color: #000000;
+    }
+    #style-1::-webkit-scrollbar
+    {
+	    width: 12px;
+	    background-color: #000000;
+    }
+
+    #style-1::-webkit-scrollbar-thumb
+    {
+	    border-radius: 10px;
+	    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	    background-color: #333333;
+    }
+
+</style>
+@Styles.Render("~/Content/chatroom")

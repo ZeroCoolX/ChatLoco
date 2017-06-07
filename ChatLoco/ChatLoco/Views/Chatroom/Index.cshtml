@@ -1,0 +1,25 @@
+﻿@model ChatLoco.Models.Base_Model.BaseModel
+
+@Html.Partial("~/Views/Shared/_AccountHandling.cshtml", Model)
+
+<head>
+    <style>
+        #map {
+              min-width: 200px;
+              width: 100%;
+              min-height: 400px;
+              height: 100%;
+        }
+    </style>
+</head>
+
+<div id="chatroom-container">
+        @Html.Partial("_FindChatroom")
+</div>
+
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzJTQNNWNeo6oJFvL0p4tlzG5m3GhC8Nc&libraries=places" async defer></script>
+
+@Scripts.Render("~/bundles/map")
+@Scripts.Render("~/bundles/chatroom")
+

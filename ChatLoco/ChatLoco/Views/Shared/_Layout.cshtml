@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title ChatLoco</title>
+        @Styles.Render("~/Content/css/css")
+
+        @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body id="body">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/errorhandling")
+    @Scripts.Render("~/bundles/partialview")
+    @Html.Partial("~/Views/Shared/_Notifications.cshtml")
+    <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-header">
+                <button type="button" id="main-navbar-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="navbar-brand">
+                    <a href='@Url.Action("Index", "Home")'>
+                        <img src='@Url.Content("~/Content/images/logo_transparent_icon.png")' />
+                    </a>
+                </div>
+                @Html.ActionLink("Launch", "Index", "Chatroom", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @Html.ActionLink("Create Account", "Create", "User")
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @Html.ActionLink("Contact Us", "Contact", "Home")
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @Html.ActionLink("FAQ/Info", "About", "Home")
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <div id="content-container" >
+        <div hidden id="error-dialog">
+        </div>
+        <div hidden id="status-dialog">
+        </div>
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/layout")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
